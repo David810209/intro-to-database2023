@@ -71,3 +71,43 @@ CREATE TABLE public.inventory_parts
     foreign key (inventory_id) references inventories(id),
     foreign key (color_id) references colors(id)
 );
+
+COPY public.colors(id, name, rgb, is_trans)
+FROM 'C:/Program Files/PostgreSQL/16/bin/colors.csv'
+DELIMITER ',' 
+CSV HEADER;
+
+COPY themes(id,name,parent_id)
+FROM 'C:/Program Files/PostgreSQL/16/bin/themes.csv'
+DELIMITER ',' 
+CSV HEADER;
+
+COPY sets(set_num,name,year,theme_id,num_parts)
+FROM 'C:/Program Files/PostgreSQL/16/bin/sets.csv'
+DELIMITER ',' 
+CSV HEADER;
+
+COPY public.inventories(id,version,set_num)
+FROM 'C:/Program Files/PostgreSQL/16/bin/inventories.csv'
+DELIMITER ',' 
+CSV HEADER;
+
+COPY public.inventory_sets(inventory_id,set_num,quantity)
+FROM 'C:/Program Files/PostgreSQL/16/bin/inventory_sets.csv'
+DELIMITER ',' 
+CSV HEADER;
+
+COPY public.part_categories(id,name)
+FROM 'C:/Program Files/PostgreSQL/16/bin/part_categories.csv'
+DELIMITER ',' 
+CSV HEADER;
+
+COPY public.parts(part_num,name,part_cat_id)
+FROM 'C:/Program Files/PostgreSQL/16/bin/parts.csv'
+DELIMITER ',' 
+CSV HEADER;
+
+COPY public.inventory_parts(inventory_id,part_num,color_id,quantity,is_spare)
+FROM 'C:/Program Files/PostgreSQL/16/bin/inventory_parts.csv'
+DELIMITER ',' 
+CSV HEADER;
