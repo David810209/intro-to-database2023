@@ -77,12 +77,12 @@ FROM 'C:/Program Files/PostgreSQL/16/bin/colors.csv'
 DELIMITER ',' 
 CSV HEADER;
 
-COPY themes(id,name,parent_id)
+COPY public.themes(id,name,parent_id)
 FROM 'C:/Program Files/PostgreSQL/16/bin/themes.csv'
 DELIMITER ',' 
 CSV HEADER;
 
-COPY sets(set_num,name,year,theme_id,num_parts)
+COPY public.sets(set_num,name,year,theme_id,num_parts)
 FROM 'C:/Program Files/PostgreSQL/16/bin/sets.csv'
 DELIMITER ',' 
 CSV HEADER;
