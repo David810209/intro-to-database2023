@@ -7,7 +7,7 @@ CREATE TABLE public.colors
     primary key (id)
 );
 
-CREATE TABLE themes
+CREATE TABLE public.themes
 (
 	id VARCHAR(15),
     name VARCHAR(100),
@@ -15,7 +15,7 @@ CREATE TABLE themes
     primary key (id)
 );
 
-CREATE TABLE sets
+CREATE TABLE public.sets
 (
 	set_num VARCHAR(20),
     name VARCHAR(100),
