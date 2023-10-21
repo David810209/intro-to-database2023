@@ -1,3 +1,5 @@
+--"colors" table
+-- primary key “id”.
 CREATE TABLE public.colors
 (
 	id VARCHAR(15),
@@ -7,6 +9,8 @@ CREATE TABLE public.colors
     primary key (id)
 );
 
+--“themes” table
+--primary key “id”
 CREATE TABLE public.themes
 (
 	id VARCHAR(15),
@@ -15,6 +19,9 @@ CREATE TABLE public.themes
     primary key (id)
 );
 
+--“sets” table
+--primary key “set_num”
+--choose theme_id as foreign key reference from “themes”
 CREATE TABLE public.sets
 (
 	set_num VARCHAR(20),
@@ -26,6 +33,9 @@ CREATE TABLE public.sets
     foreign key (theme_id) references themes(id)
 );
 
+--“inventories” table
+--primary key “id”.
+--choose set_num as foreign key reference from “sets”
 CREATE TABLE public.inventories
 (
 	id VARCHAR(15),
@@ -35,6 +45,10 @@ CREATE TABLE public.inventories
     foreign key (set_num) references sets(set_num)
 );
 
+--“inventory_sets” table
+--primary key “inventory_id” and “set_num”
+--choose inventory_id as foreign key reference from “inventories”
+--choose set_num as foreign key reference from “sets”
 CREATE TABLE public.inventory_sets
 (
 	inventory_id VARCHAR(15),
@@ -45,6 +59,8 @@ CREATE TABLE public.inventory_sets
     foreign key (set_num) references sets(set_num)
 );
 
+--“part_categories” table
+--primary key “id”
 CREATE TABLE public.part_categories
 (
     id VARCHAR(15),
@@ -52,6 +68,9 @@ CREATE TABLE public.part_categories
     primary key (id)
 );
 
+--“parts” table
+--primary key “part_num”
+--choose part_cat_id as foreign key reference from “part_categories”
 CREATE TABLE public.parts
 (
     part_num VARCHAR(20),
@@ -61,6 +80,10 @@ CREATE TABLE public.parts
     foreign key (part_cat_id) references part_categories(id)
 );
 
+--“inventory_parts” table
+--no primary key because there is no unique attribute in “inventory_parts.csv”
+--choose inventory_id as foreign key reference from "inventories"
+--choose color_id as foreign key reference from "colors"
 CREATE TABLE public.inventory_parts
 (
     inventory_id VARCHAR(15),
@@ -71,7 +94,6 @@ CREATE TABLE public.inventory_parts
     foreign key (inventory_id) references inventories(id),
     foreign key (color_id) references colors(id)
 );
-
 COPY public.colors(id, name, rgb, is_trans)
 FROM 'C:/Program Files/PostgreSQL/16/bin/colors.csv'
 DELIMITER ',' 
