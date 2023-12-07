@@ -1,5 +1,5 @@
 
-'''
+/*
 pre_created:
 create view Country_and_Continent AS(
 	SELECT
@@ -14,7 +14,7 @@ create view Country_and_Continent AS(
 create view indices_continentcode
 as select *
 from Indices JOIN Country_Continent on indices.countrycode = country_continent.country_code
-'''
+*/
 
 WITH Old_MovingAverage_Country AS(
 		SELECT
