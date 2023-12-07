@@ -7,6 +7,11 @@ CREATE TABLE PUBLIC.country (
 	);
 --import csv
 \copy PUBLIC.country(Country_Name, Country_Code, Country_Number) FROM 'C:\Program Files\PostgreSQL\16\bin\country.csv' DELIMITER ',' CSV HEADER;
+--delete the country name part after first ','
+UPDATE country
+SET Country_Name = SUBSTRING(Country_Name FROM 1 FOR POSITION(',' IN Country_Name) - 1)
+WHERE POSITION(',' IN Country_Name) > 0;
+
 
 --create continent table
 CREATE TABLE PUBLIC.continent (
@@ -37,7 +42,7 @@ CREATE table public.o(
 	DATE date NOT NULL,
 	C1M INTEGER,
 	C1M_Flag INTEGER,
-	C2Mg INTEGER,
+	C2M INTEGER,
 	C2M_Flag INTEGER,
 	C3M INTEGER,
 	C3M_Flag INTEGER,
@@ -100,7 +105,7 @@ CREATE TABLE PUBLIC.policy (
 	DATE date NOT NULL,
 	C1M INTEGER,
 	C1M_Flag INTEGER,
-	C2Mg INTEGER,
+	C2M INTEGER,
 	C2M_Flag INTEGER,
 	C3M INTEGER,
 	C3M_Flag INTEGER,
@@ -179,7 +184,7 @@ from o
 CREATE TABLE PUBLIC.cases (
 	CountryCode VARCHAR(10) NOT NULL,
 	DATE date NOT NULL,
-	ConfirmedCases INTEGER,
+	ConfirmedCases DOUBLE PRECISION,
 	ConfirmedDeaths INTEGER,
 	MajorityVaccinated VARCHAR(10),
 	PopulationVaccinated DOUBLE PRECISION,
