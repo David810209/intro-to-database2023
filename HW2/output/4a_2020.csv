@@ -1,12 +1,12 @@
-date	continent_name	max_country_name	max_stringency_index	min_country_name	min_stringency_index
-2020/4/1	Africa	Congo	97.22	Burundi	13.89
-2020/4/1	Asia	Sri Lanka	100	Tajikistan	19.44
-2020/4/1	Asia	Jordan	100	Tajikistan	19.44
-2020/4/1	Asia	India	100	Tajikistan	19.44
-2020/4/1	Asia	Philippines	100	Tajikistan	19.44
-2020/4/1	Asia	Georgia	100	Tajikistan	19.44
-2020/4/1	Europe	Georgia	100	Belarus	12.04
-2020/4/1	Europe	Serbia	100	Belarus	12.04
-2020/4/1	North America	Honduras	100	Nicaragua	15.74
-2020/4/1	Oceania	New Zealand	96.3	Kiribati	40.74
-2020/4/1	South America	Argentina	100	Guyana	57.41
+"date","continent_name","max_country_name","max_stringency_index","min_country_name","min_stringency_index"
+"2020-04-01","Africa","Congo","97.22","Burundi","13.89"
+"2020-04-01","Asia","Sri Lanka","100","Tajikistan","19.44"
+"2020-04-01","Asia","Jordan","100","Tajikistan","19.44"
+"2020-04-01","Asia","India","100","Tajikistan","19.44"
+"2020-04-01","Asia","Philippines","100","Tajikistan","19.44"
+"2020-04-01","Asia","Georgia","100","Tajikistan","19.44"
+"2020-04-01","Europe","Georgia","100","Belarus","12.04"
+"2020-04-01","Europe","Serbia","100","Belarus","12.04"
+"2020-04-01","North America","Honduras","100","Nicaragua","15.74"
+"2020-04-01","Oceania","New Zealand","96.3","Kiribati","40.74"
+"2020-04-01","South America","Argentina","100","Guyana","57.41"
