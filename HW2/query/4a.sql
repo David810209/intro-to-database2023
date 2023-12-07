@@ -1,49 +1,139 @@
--- create the connect of country and continent to satisfy two question
-CREATE VIEW Country_and_Continent
-AS SELECT x.Country_Code,
-	x.Country_Name,
-	x.Continent_Name
-FROM (Country NATURAL JOIN Country_Continent NATURAL JOIN Continent)AS x;
 
-WITH max_min
-AS (
-	SELECT DATE,
-		MAX(StringencyIndex_Average_ForDisplay) AS maximum,
-		Min(StringencyIndex_Average_ForDisplay) AS Minimum
-	FROM Indices
-	WHERE DATE IN ('2022-12-01', '2022-04-01', '2021-04-01', '2020-04-01')
-	GROUP BY DATE
-	),
-get_code
-AS (
-	SELECT m.DATE,
-		Max_Code.CountryCode AS Max_Code,
-		Min_Code.CountryCode AS Min_Code
-	FROM max_min AS m
-	LEFT JOIN Indices AS Max_Code
-		ON (
-				m.Maximum = Max_Code.StringencyIndex_Average_ForDisplay
-				AND m.DATE = Max_Code.DATE
-				)
-	LEFT JOIN Indices AS Min_code
-		ON (
-				m.Minimum = Min_Code.StringencyIndex_Average_ForDisplay
-				AND m.DATE = Min_Code.DATE
-				)
-	ORDER BY m.DATE
+
+create view Country_and_Continent AS(
+	SELECT
+		Country.Country_Code,
+		Country.Country_Name,
+		Continent.Continent_Code,
+		Continent.Continent_Name
+	FROM
+		Country NATURAL JOIN Country_Continent NATURAL JOIN Continent
 	)
 
+create view indices_continentcode
+as select *
+from Indices JOIN Country_Continent on indices.countrycode = country_continent.country_code
+
+
+WITH max_min(Date, Continent_Code, Maximum, Minimum) AS(
+	SELECT
+		Date,
+		Continent_Code,
+		MAX(StringencyIndex_Average_ForDisplay),
+		Min(StringencyIndex_Average_ForDisplay)
+	FROM indices_continentcode
+	WHERE 
+		Date in( '2022-04-01','2021-04-01 ','2020-04-01 ')
+	GROUP BY
+		Date, Continent_Code
+	),
+	get_code AS(
+	SELECT 
+		mm.Date,
+		mm.Continent_Code,
+		Maxcc.Country_Code AS Max_CountryCode,
+		mm.Maximum,
+		
+		Mincc.Country_Code AS Min_CountryCode,
+		mm.Minimum
+	FROM
+		max_min AS mm
+		LEFT JOIN indices_continentcode AS Maxcc
+			ON (mm.Maximum = Maxcc.StringencyIndex_Average_ForDisplay 
+				AND mm.Date = Maxcc.Date
+			   	AND mm.Continent_Code = Maxcc.Continent_Code)
+		LEFT JOIN indices_continentcode AS Mincc
+			ON (mm.Minimum = Mincc.StringencyIndex_Average_ForDisplay 
+				AND mm.Date = Mincc.Date
+			   	AND mm.Continent_Code = Mincc.Continent_Code)
+	ORDER BY
+		mm.Date,mm.Continent_Code
+	)
 SELECT
 	g.Date,
-	MaxName.Continent_Name AS Max_CountryName,
-	MaxName.Country_Name AS Max_CotinentName,
-	MinName.Continent_Name AS Min_CountryName,
-	MinName.Country_Name AS Min_CotinentName
+	Ma.Continent_Name,
+	
+	Ma.Country_Name AS Max_Country_Name,
+	g.Maximum AS Max_Stringency_Index, 
+	
+	Mi.Country_Name AS Min_Country_Name,
+	g.Minimum AS Min_Stringency_Index
 FROM
 	get_code AS g
-	LEFT JOIN Country_and_Continent AS MaxName
-		ON g.Max_Code = MaxName.Country_Code
-	LEFT JOIN Country_and_Continent AS MinName
-		ON g.Min_Code = MinName.Country_Code
+	LEFT JOIN Country_and_Continent AS Ma
+		ON (g.Max_CountryCode = Ma.Country_Code
+			AND g.Continent_Code = Ma.Continent_Code)
+	LEFT JOIN Country_and_Continent AS Mi
+		ON (g.Min_CountryCode = Mi.Country_Code
+			AND g.Continent_Code = Mi.Continent_Code)
 ORDER BY
-	g.Date
+	g.Date, Ma.Continent_Name
+
+create view Country_and_Continent AS(
+	SELECT
+		Country.Country_Code,
+		Country.Country_Name,
+		Continent.Continent_Code,
+		Continent.Continent_Name
+	FROM
+		Country NATURAL JOIN Country_Continent NATURAL JOIN Continent
+	)
+
+create view indices_continentcode
+as select *
+from Indices JOIN Country_Continent on indices.countrycode = country_continent.country_code
+
+
+WITH max_min(Date, Continent_Code, Maximum, Minimum) AS(
+	SELECT
+		Date,
+		Continent_Code,
+		MAX(StringencyIndex_Average_ForDisplay),
+		Min(StringencyIndex_Average_ForDisplay)
+	FROM indices_continentcode
+	WHERE 
+		Date in( '2022-04-01','2021-04-01 ','2020-04-01 ')
+	GROUP BY
+		Date, Continent_Code
+	),
+	get_code AS(
+	SELECT 
+		mm.Date,
+		mm.Continent_Code,
+		Maxcc.Country_Code AS Max_CountryCode,
+		mm.Maximum,
+		
+		Mincc.Country_Code AS Min_CountryCode,
+		mm.Minimum
+	FROM
+		max_min AS mm
+		LEFT JOIN indices_continentcode AS Maxcc
+			ON (mm.Maximum = Maxcc.StringencyIndex_Average_ForDisplay 
+				AND mm.Date = Maxcc.Date
+			   	AND mm.Continent_Code = Maxcc.Continent_Code)
+		LEFT JOIN indices_continentcode AS Mincc
+			ON (mm.Minimum = Mincc.StringencyIndex_Average_ForDisplay 
+				AND mm.Date = Mincc.Date
+			   	AND mm.Continent_Code = Mincc.Continent_Code)
+	ORDER BY
+		mm.Date,mm.Continent_Code
+	)
+SELECT
+	g.Date,
+	Ma.Continent_Name,
+	
+	Ma.Country_Name AS Max_Country_Name,
+	g.Maximum AS Max_Stringency_Index, 
+	
+	Mi.Country_Name AS Min_Country_Name,
+	g.Minimum AS Min_Stringency_Index
+FROM
+	get_code AS g
+	LEFT JOIN Country_and_Continent AS Ma
+		ON (g.Max_CountryCode = Ma.Country_Code
+			AND g.Continent_Code = Ma.Continent_Code)
+	LEFT JOIN Country_and_Continent AS Mi
+		ON (g.Min_CountryCode = Mi.Country_Code
+			AND g.Continent_Code = Mi.Continent_Code)
+ORDER BY
+	g.Date, Ma.Continent_Name
